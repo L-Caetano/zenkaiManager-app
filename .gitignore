@@ -30,6 +30,7 @@ log.txt
 /bazel-out
 
 # Node
+/frontend/node_modules
 /node_modules
 npm-debug.log
 yarn-error.log
@@ -68,3 +69,22 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Angular / Ionic
+.angular/
+dist/
+www/
+build/
+
+# Env
+.env
+.env.*
+
+# OS / IDE
+.DS_Store
+.vscode/

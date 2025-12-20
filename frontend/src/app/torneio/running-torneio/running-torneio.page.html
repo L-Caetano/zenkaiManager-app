@@ -1,0 +1,67 @@
+<app-header></app-header>
+<ion-content class="arena-bg">
+
+  <!-- HEADER -->
+  <div class="top-header">
+    <div>
+      <h2>teste</h2>
+      <span class="phase">
+        <span class="dot"></span> FASE SUÍÇA
+      </span>
+    </div>
+
+    <ion-button fill="outline" size="small">
+      <ion-icon name="time-outline"></ion-icon>
+      @if(timer > 0){
+        {{timer}} Min
+      } @else {
+        Tempo Livre
+      }
+    </ion-button>
+  </div>
+
+  <!-- CLASSIFICAÇÃO -->
+  <ion-card class="glass-card">
+    <ion-card-header>
+      <ion-card-title>
+        🏆 Classificação
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item *ngFor="let player of players, let i = index" class="rank blue">
+          <span class="pos">1</span>
+          <span class="name"> {{player.name}}</span>
+          <span class="pts">{{player.pts}} pts</span>
+        </ion-item>
+     </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- RODADA -->
+  <div class="round-header">
+    <h3>Rodada 1</h3>
+    <span class="status">Em andamento</span>
+  </div>
+
+  <!-- PARTIDAS -->
+  <ion-card class="match-card" *ngFor="let match of matches; let i = index">
+    <div class="player blue">{{match.a.name}}</div>
+
+    <div >
+      <strong>{{match.result.a}}</strong>
+      <span>VS</span>
+      <strong>{{match.result.b}}</strong>
+    </div>
+
+    <div class="player green">{{match.b.name}}</div>
+  </ion-card>
+  <ion-button class="next-btn" (click)="reportarResultado()">Reportar Resultado</ion-button>
+  <!-- ACTION -->
+  <ion-button expand="block" class="next-btn">
+    Próxima Rodada
+    <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+  </ion-button>
+
+</ion-content>

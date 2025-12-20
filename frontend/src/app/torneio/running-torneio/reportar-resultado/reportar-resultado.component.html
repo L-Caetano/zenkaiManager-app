@@ -1,0 +1,62 @@
+<ion-content class="modal-content">
+
+  <!-- Header -->
+  <div class="header">
+    <h2>Resultado da Partida</h2>
+    <p>Fase Suíça · Rodada 1</p>
+
+    <ion-button fill="clear" class="close-btn">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Score Area -->
+  <div class="score-container">
+
+    <!-- Player A -->
+    <div class="player">
+      <div class="player-badge yellow">14</div>
+
+      <div class="score-control">
+        <button class="circle-btn">−</button>
+        <div class="score">0</div>
+        <button class="circle-btn primary">+</button>
+      </div>
+    </div>
+
+    <div class="vs">VS</div>
+
+    <!-- Player B -->
+    <div class="player">
+      <div class="player-badge red">23</div>
+
+      <div class="score-control">
+        <button class="circle-btn">−</button>
+        <div class="score">0</div>
+        <button class="circle-btn primary">+</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Info -->
+  <p class="info">
+    Partidas vão até 3 pontos. Vencedor ganha +2pts bônus.
+  </p>
+
+  <!-- Error -->
+  <p class="error">
+    Defina um vencedor para continuar.
+  </p>
+
+  <!-- Actions -->
+  <ion-button expand="block" class="finish-btn" (click)="confirm()" disabled>
+    <ion-icon name="trophy-outline"  slot="start"></ion-icon>
+    Finalizar Partida
+  </ion-button>
+
+  <ion-button fill="clear" expand="block" (click)="cancel()" class="cancel-btn">
+    Cancelar
+  </ion-button>
+
+</ion-content>

@@ -1,0 +1,129 @@
+.arena-bg {
+  --background: radial-gradient(circle at top, #0b1020, #050814);
+  color: #fff;
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+
+  h2 {
+    margin: 0;
+  }
+
+  .phase {
+    font-size: 12px;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+  }
+}
+
+.glass-card {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 40, 70, 0.65),
+    rgba(15, 20, 40, 0.9)
+  );
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin: 12px;
+}
+
+.rank {
+  --background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .pos {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .name {
+    flex: 1;
+  }
+
+  .pts {
+    opacity: 0.6;
+    font-size: 12px;
+  }
+}
+
+.rank.blue .pos { background: #3b82f6; }
+.rank.red .pos { background: #ef4444; }
+.rank.green .pos { background: #22c55e; }
+.rank.yellow .pos { background: #eab308; }
+
+.round-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+
+  .status {
+    background: #2563eb;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+}
+
+.match-card {
+  margin: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(40, 60, 90, 0.5),
+    rgba(20, 30, 50, 0.8)
+  );
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.player.blue { background: #3b82f6; }
+.player.red { background: #ef4444; }
+.player.green { background: #22c55e; }
+.player.yellow { background: #eab308; color: #000; }
+
+.match-center {
+  text-align: center;
+
+  strong {
+    font-size: 20px;
+  }
+
+  span {
+    display: block;
+    font-size: 12px;
+    opacity: 0.6;
+  }
+}
+
+.next-btn {
+  margin: 16px;
+  height: 48px;
+  --background: #334155;
+}

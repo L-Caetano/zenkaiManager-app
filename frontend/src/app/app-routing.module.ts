@@ -15,6 +15,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'runningTorneio',
+    loadComponent: () => import('./torneio/running-torneio/running-torneio.page').then( m => m.RunningTorneioPage)
+  },
 ];
 
 @NgModule({

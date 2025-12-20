@@ -32,6 +32,9 @@ if (!player) return;
 
 this.players.push(player);
 }
+removePlayer(i: number){
+  this.players.splice(i, 1)
+}
   timerChange(){
 
     this.timer == 0 ? this.timer = 50 : this.timer = 0

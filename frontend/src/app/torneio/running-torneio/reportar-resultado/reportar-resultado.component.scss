@@ -1,0 +1,131 @@
+.modal-content {
+  --background: linear-gradient(180deg, #0b1220, #060b16);
+  padding: 20px;
+  text-align: center;
+}
+
+/* Header */
+.header {
+  position: relative;
+  margin-bottom: 20px;
+
+  h2 {
+    color: #fff;
+    margin: 0;
+  }
+
+  p {
+    color: #8aa0c8;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    color: #8aa0c8;
+  }
+}
+
+/* Players */
+.score-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Player badge */
+.player-badge {
+  padding: 8px 18px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.yellow {
+  background: linear-gradient(135deg, #facc15, #eab308);
+}
+
+.red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* Score control */
+.score-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #fff;
+}
+
+.circle-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 22px;
+}
+
+.circle-btn.primary {
+  background: #6366f1;
+}
+
+/* VS */
+.vs {
+  color: #8aa0c8;
+  font-weight: 600;
+  margin: 0 10px;
+}
+
+/* Info text */
+.info {
+  color: #8aa0c8;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* Error */
+.error {
+  color: #ef4444;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* Buttons */
+.finish-btn {
+  --background: #4f46e5;
+  --border-radius: 14px;
+  height: 52px;
+  font-weight: 600;
+}
+
+.finish-btn[disabled] {
+  opacity: 0.5;
+}
+
+.cancel-btn {
+  color: #8aa0c8;
+  margin-top: 8px;
+}

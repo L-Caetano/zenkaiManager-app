@@ -102,7 +102,10 @@
           @if (players.length > 0){
             <ion-list [inset]="true">
           <ion-item *ngFor="let player of players; let i = index">
-  {{ i + 1 }} - {{ player }}
+  {{ i + 1 }} - {{ player }} 
+  <ion-button class="add-btn" (click)="removePlayer(i)">
+<ion-icon  name="trash-bin-outline"></ion-icon>
+  </ion-button>
             </ion-item>
             </ion-list>
 } @else {
