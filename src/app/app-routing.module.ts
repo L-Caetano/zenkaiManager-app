@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'criarTorneio',
+    loadComponent: () => import('./torneio/criar-torneio/criar-torneio.page').then( m => m.CriarTorneioPage)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

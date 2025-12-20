@@ -1,0 +1,118 @@
+.arena-bg {
+  --background: radial-gradient(circle at top, #0b1020, #050814);
+}
+
+.container {
+  padding: 16px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 16px;
+
+  img {
+    height:200px;
+  }
+}
+
+.glass-card {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 40, 70, 0.65),
+    rgba(15, 20, 40, 0.9)
+  );
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  background: #10162f;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.field {
+  margin-bottom: 14px;
+
+  label {
+    font-size: 12px;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 6px;
+  }
+}
+
+.player-input {
+  display: flex;
+  gap: 8px;
+}
+
+.add-btn {
+  --background: #6366f1;
+  width: 44px;
+}
+
+.counter.full {
+  display: flex;
+  justify-content: space-between;
+  background: #0b1020;
+  border-radius: 10px;
+  padding: 6px;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {
+  flex: 1;
+  height: 36px;
+  --background: #10162f;
+  --color: #9ca3af;
+}
+
+.chip.active {
+  --background: #4f46e5;
+  --color: #fff;
+}
+
+.empty-box {
+  border: 1px dashed rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  opacity: 0.6;
+  margin: 16px 0;
+}
+
+.start-btn {
+  --background: #4f46e5;
+  height: 48px;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.resumo-mobile {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+
+  strong {
+    display: block;
+    margin-top: 4px;
+  }
+}
