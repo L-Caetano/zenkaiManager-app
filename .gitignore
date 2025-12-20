@@ -38,7 +38,25 @@ yarn-error.log
 # IDEs and editors
 .idea/
 .project
-.classpath
+.classpath# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Angular / Ionic
+.angular/
+dist/
+www/
+build/
+
+# Env
+.env
+.env.*
+
+# OS / IDE
+.DS_Store
+.vscode/
+
 .c9/
 *.launch
 .settings/
