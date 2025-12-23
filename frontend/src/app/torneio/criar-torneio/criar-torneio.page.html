@@ -38,12 +38,12 @@
       </ion-card-header>
 
       <ion-card-content>
-
+<form [formGroup]="tForm">
         <div class="field">
           <label>Nome do Torneio</label>
-          <ion-input placeholder="Ex: Liga Zenkai"></ion-input>
+          <ion-input formControlName="name"  placeholder="Ex: Liga Zenkai"></ion-input>
         </div>
-
+</form>
         <div class="field">
           <label>Rodadas</label>
           <div class="counter full">
@@ -68,7 +68,7 @@
             <ion-icon name="time-outline"></ion-icon>
             @if(timer == 0){
                Tempo Livre
-            } 
+            }
           @else {
               50 Minutos
           }
@@ -102,7 +102,7 @@
           @if (players.length > 0){
             <ion-list [inset]="true">
           <ion-item *ngFor="let player of players; let i = index">
-  {{ i + 1 }} - {{ player }} 
+  {{ i + 1 }} - {{ player }}
   <ion-button class="add-btn" (click)="removePlayer(i)">
 <ion-icon  name="trash-bin-outline"></ion-icon>
   </ion-button>
@@ -117,7 +117,7 @@
         </div>
           }
 
-        <ion-button expand="block" class="start-btn">
+        <ion-button (click)="createTournament()" expand="block" class="start-btn">
           <ion-icon name="play-outline"></ion-icon>
           Iniciar Torneio
         </ion-button>
@@ -129,7 +129,7 @@
       </ion-card-content>
     </ion-card>
 
- 
+
   </div>
 </ion-content>
 

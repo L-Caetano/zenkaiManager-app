@@ -7,7 +7,8 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TournamentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+
   async getPlayers(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
       where: { id: tournamentId },
@@ -54,9 +55,9 @@ export class TournamentsService {
     });
   }
 
-  async create(name: string) {
+  async create(name: string, timer: number, rodadas: number) {
     return this.prisma.tournament.create({
-      data: { name },
+      data: { name, timer, rodadas },
     });
   }
 

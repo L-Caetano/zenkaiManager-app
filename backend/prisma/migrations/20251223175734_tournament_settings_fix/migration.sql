@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "Match" ALTER COLUMN "scoreA" SET DEFAULT 0,
+ALTER COLUMN "scoreB" SET DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Tournament" ADD COLUMN     "playOff" INTEGER,
+ADD COLUMN     "rodadas" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN     "timer" INTEGER NOT NULL DEFAULT 0;

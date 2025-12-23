@@ -3,11 +3,11 @@ import { TournamentsService } from './tournaments.service';
 
 @Controller('tournaments')
 export class TournamentsController {
-  constructor(private service: TournamentsService) {}
+  constructor(private service: TournamentsService) { }
 
   @Post()
-  create(@Body() body: { name: string }) {
-    return this.service.create(body.name);
+  create(@Body() body: { name: string; timer: number; rodadas: number }) {
+    return this.service.create(body.name, body.timer, body.rodadas);
   }
 
   @Post(':id/generate-matches')

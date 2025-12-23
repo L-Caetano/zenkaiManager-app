@@ -11,8 +11,10 @@ datasource db {
 model Tournament {
   id        Int      @id @default(autoincrement())
   name      String
+  timer Int @default(0)
   createdAt DateTime @default(now())
-
+  rodadas Int @default(1)
+  playOff Int?
   players Player[] @relation("TournamentPlayers")
   matches Match[]  @relation("TournamentMatches")
 }
@@ -34,8 +36,8 @@ model Match {
   tournamentId Int
   playerAId    Int
   playerBId    Int
-  scoreA       Int?
-  scoreB       Int?
+  scoreA       Int? @default(0)
+  scoreB       Int? @default(0)
   finished     Boolean  @default(false)
   createdAt    DateTime @default(now())
 

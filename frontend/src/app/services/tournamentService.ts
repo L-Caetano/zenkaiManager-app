@@ -4,15 +4,17 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class RankingService {
+export class TournamentService {
   private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) { }
 
-  getTournamentPlayers(tournamentId: number): Promise<any[]> {
+  createTournament(name: string, timer: number, rodadas: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.get<any[]>(`${this.apiUrl}/tournaments/${tournamentId}/players`).subscribe(resolve, reject);
-
-    })
+      this.http
+        .post<any>(`${this.apiUrl}/tournaments`, { name, timer, rodadas })
+        .subscribe(resolve, reject);
+    });
   }
 }
+
