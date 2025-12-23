@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Match" ADD COLUMN     "finished" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "scoreA" DROP NOT NULL,
+ALTER COLUMN "scoreB" DROP NOT NULL;

@@ -45,20 +45,8 @@
     <span class="status">Em andamento</span>
   </div>
 
-  <!-- PARTIDAS -->
-  <ion-card class="match-card" *ngFor="let match of matches; let i = index">
-    <div class="player blue">{{match.a.name}}</div>
-
-    <div >
-      <strong>{{match.result.a}}</strong>
-      <span>VS</span>
-      <strong>{{match.result.b}}</strong>
-    </div>
-
-    <div class="player green">{{match.b.name}}</div>
-  </ion-card>
-  <ion-button class="next-btn" (click)="reportarResultado()">Reportar Resultado</ion-button>
-  <!-- ACTION -->
+ <app-matches></app-matches>
+ <!-- ACTION -->
   <ion-button expand="block" class="next-btn">
     Próxima Rodada
     <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>

@@ -1,0 +1,48 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tournament {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  players Player[] @relation("TournamentPlayers")
+  matches Match[]  @relation("TournamentMatches")
+}
+
+model Player {
+  id        Int      @id @default(autoincrement())
+  name      String
+  pts       Int      @default(0)
+  createdAt DateTime @default(now())
+
+  tournaments Tournament[] @relation("TournamentPlayers")
+
+  matchesA Match[] @relation("PlayerA")
+  matchesB Match[] @relation("PlayerB")
+}
+
+model Match {
+  id           Int      @id @default(autoincrement())
+  tournamentId Int
+  playerAId    Int
+  playerBId    Int
+  scoreA       Int?
+  scoreB       Int?
+  finished     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  tournament Tournament @relation("TournamentMatches", fields: [tournamentId], references: [id])
+
+  playerA Player @relation("PlayerA", fields: [playerAId], references: [id])
+  playerB Player @relation("PlayerB", fields: [playerBId], references: [id])
+  @@unique([tournamentId, playerAId, playerBId])
+}
+
