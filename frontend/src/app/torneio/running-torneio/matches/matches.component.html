@@ -3,10 +3,10 @@
     <div class="player blue">{{match.playerA.name}}</div>
 
     <div >
-      <strong>{{match.scoreA}}</strong>
+      <strong>@if(match.scoreA == 0){{{match.scoreA}}}@else{0}</strong>
       <span>VS</span>
-      <strong>{{match.scoreB}}</strong>
-    </div>
+      <strong>@if(match.scoreB == 0){{{match.scoreB}}}@else{0}</strong>
+      </div>
 
     <div class="player green">{{match.playerB.name}}</div>
   </ion-card>

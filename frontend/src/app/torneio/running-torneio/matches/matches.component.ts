@@ -21,18 +21,23 @@ export class MatchesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tournamentId = Number(this.route.snapshot.paramMap.get('id'));
+    // this.tournamentId = Number(this.route.snapshot.paramMap.get('id'));
+    this.tournamentId = 1;
     this.loadMatches();
   }
   reportarResultado() {
   }
 
-  loadMatches() {
-    this.matchesService
-      .getTournamentMatches(this.tournamentId)
-      .subscribe((data) => (this.matches = data));
-  }
 
+  loadMatches() {
+    this.matchesService.getTournamentMatches(
+      this.tournamentId
+    ).then((r: Match[]) => {
+      this.matches = r
+
+      console.log("teste: ", this.matches)
+    });
+  }
   finishMatch(match: Match) {
     if (match.scoreA == null || match.scoreB == null) return;
 

@@ -3,7 +3,7 @@ import { TournamentsService } from './tournaments.service';
 
 @Controller('tournaments')
 export class TournamentsController {
-  constructor(private service: TournamentsService) { }
+  constructor(private service: TournamentsService) {}
 
   @Post()
   create(@Body() body: { name: string }) {
@@ -17,6 +17,11 @@ export class TournamentsController {
   @Get(':id/matches')
   getMatches(@Param('id') id: string) {
     return this.service.getMatches(+id);
+  }
+
+  @Get(':id/players')
+  getPlayers(@Param('id') id: string) {
+    return this.service.getPlayers(+id);
   }
 
   @Post(':id/players')

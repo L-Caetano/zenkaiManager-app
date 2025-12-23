@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
 
 export interface Match {
   id: number;
@@ -19,10 +19,11 @@ export class MatchesService {
 
   constructor(private http: HttpClient) { }
 
-  getTournamentMatches(tournamentId: number): Observable<Match[]> {
-    return this.http.get<Match[]>(
-      `${this.apiUrl}/tournaments/${tournamentId}/matches`
-    );
+  getTournamentMatches(tournamentId: number): Promise<Match[]> {
+    return new Promise((resolve, reject) => {
+      this.http.get<Match[]>(`${this.apiUrl}/tournaments/${tournamentId}/matches`).subscribe(resolve, reject);
+
+    })
   }
 
   finishMatch(matchId: number, scoreA: number, scoreB: number) {

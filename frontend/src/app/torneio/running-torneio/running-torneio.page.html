@@ -20,25 +20,7 @@
     </ion-button>
   </div>
 
-  <!-- CLASSIFICAÇÃO -->
-  <ion-card class="glass-card">
-    <ion-card-header>
-      <ion-card-title>
-        🏆 Classificação
-      </ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-list lines="none">
-        <ion-item *ngFor="let player of players, let i = index" class="rank blue">
-          <span class="pos">1</span>
-          <span class="name"> {{player.name}}</span>
-          <span class="pts">{{player.pts}} pts</span>
-        </ion-item>
-     </ion-list>
-    </ion-card-content>
-  </ion-card>
-
+<app-torneio-ranking></app-torneio-ranking>
   <!-- RODADA -->
   <div class="round-header">
     <h3>Rodada 1</h3>

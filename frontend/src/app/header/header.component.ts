@@ -7,10 +7,10 @@ import { IonicModule } from "@ionic/angular";
   styleUrls: ['./header.component.scss'],
   imports: [IonicModule],
 })
-export class HeaderComponent  implements OnInit {
+export class HeaderComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

@@ -7,7 +7,25 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TournamentsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
+  async getPlayers(tournamentId: number) {
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+      include: {
+        players: {
+          orderBy: {
+            pts: 'desc',
+          },
+        },
+      },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Tournament not found');
+    }
+
+    return tournament.players;
+  }
 
   async getMatches(tournamentId: number) {
     const tournamentExists = await this.prisma.tournament.findUnique({
