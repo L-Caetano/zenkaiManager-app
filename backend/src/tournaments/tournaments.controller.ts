@@ -1,6 +1,15 @@
-import { Controller, Param, Body, Post, Get } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Param,
+  Body,
+  Post,
+  Patch,
+  Get,
+} from '@nestjs/common';
 import { TournamentsService } from './tournaments.service';
 
+import { UpdateTournamentSettingsDto } from '../../DTOs/update-tournament-settings.dto';
 @Controller('tournaments')
 export class TournamentsController {
   constructor(private service: TournamentsService) {}
@@ -22,6 +31,13 @@ export class TournamentsController {
       body.playOff,
     );
   }
+  @Patch(':id/settings')
+  updateSettings(
+    @Param('id') id: string,
+    @Body() body: UpdateTournamentSettingsDto,
+  ) {
+    return this.service.updateSettings(Number(id), body);
+  }
   @Get(':id/settings')
   getSettings(@Param('id') id: string) {
     return this.service.getTournamentSettings(Number(id));
@@ -40,6 +56,10 @@ export class TournamentsController {
     return this.service.getPlayers(+id);
   }
 
+  @Delete(':id/players')
+  removePlayers(@Param('id') id: string, @Body() playerIds: number[]) {
+    return this.service.removePlayers(+id, playerIds);
+  }
   @Post(':id/players')
   addPlayers(@Param('id') id: string, @Body() body: { playerIds: number[] }) {
     return this.service.addPlayers(Number(id), body.playerIds);

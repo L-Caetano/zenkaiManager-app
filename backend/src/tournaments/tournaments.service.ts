@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-
+import { UpdateTournamentSettingsDto } from '../../DTOs/update-tournament-settings.dto';
 @Injectable()
 export class TournamentsService {
   constructor(private prisma: PrismaService) {}
@@ -167,5 +167,68 @@ export class TournamentsService {
     });
 
     return player;
+  }
+  async updateSettings(
+    tournamentId: number,
+    data: UpdateTournamentSettingsDto,
+  ) {
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+      select: { id: true },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Tournament not found');
+    }
+
+    return this.prisma.tournament.update({
+      where: { id: tournamentId },
+      data,
+      select: {
+        id: true,
+        name: true,
+        rodadas: true,
+        playOff: true,
+        timer: true,
+      },
+    });
+  }
+
+  async removePlayers(tournamentId: number, playerIds: number[]) {
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+      select: { id: true },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Tournament not found');
+    }
+
+    return this.prisma.$transaction([
+      this.prisma.match.deleteMany({
+        where: {
+          tournamentId,
+          OR: [
+            { playerAId: { in: playerIds } },
+            { playerBId: { in: playerIds } },
+          ],
+        },
+      }),
+
+      this.prisma.tournament.update({
+        where: { id: tournamentId },
+        data: {
+          players: {
+            disconnect: playerIds.map((id) => ({ id })),
+          },
+        },
+      }),
+
+      this.prisma.player.deleteMany({
+        where: {
+          id: { in: playerIds },
+        },
+      }),
+    ]);
   }
 }

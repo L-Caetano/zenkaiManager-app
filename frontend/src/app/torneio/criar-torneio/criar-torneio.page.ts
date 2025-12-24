@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, ɵInternalFormsSharedModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, IonAccordionGroup } from '@ionic/angular';
 import { HeaderComponent } from "src/app/header/header.component";
 import { TournamentService } from 'src/app/services/tournamentService';
 import { Router } from '@angular/router';
@@ -23,15 +23,17 @@ export class CriarTorneioPage implements OnInit {
   public rodadas: number = 1;
   public topCut: number = 2
   public timer: number = 0
-  public players: string[] = [];
+  public players: any[] = [];
   public name: string = ""
   public id?: number | null = null;
-
+  @ViewChild('accordionGroup', { static: true }) accordionGroup!: IonAccordionGroup;
   constructor(private fb: FormBuilder, private tournamentService: TournamentService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     const requestNumber = this.activatedRoute.snapshot.paramMap.get('id')
     if (requestNumber) {
+
+      this.toggleAccordion("players")
       this.id = Number(requestNumber);
       this.tournamentService.getTournamentSettings(this.id).then((r: any) => {
         console.log("rrr", r)
@@ -39,9 +41,25 @@ export class CriarTorneioPage implements OnInit {
         this.topCut = r.playOff != null ? r.playOff : 0
         this.timer = r.timer
         this.rodadas = r.rodadas
+
+        if (!this.id) return
+        this.tournamentService.getPlayersFromTournament(this.id).then((r: any) => {
+          console.log(r)
+          this.players = r;
+        })
       })
+    } else {
+      this.toggleAccordion("config")
     }
   }
+  toggleAccordion = (value: string) => {
+    const nativeEl = this.accordionGroup;
+    if (nativeEl.value === value) {
+      nativeEl.value = undefined;
+    } else {
+      nativeEl.value = value;
+    }
+  };
   addPlayer() {
     const player = this.form.controls.playerControl.value;
 
@@ -65,7 +83,15 @@ export class CriarTorneioPage implements OnInit {
       this.router.navigate(['/criarTorneio', this.id]);
     })
   }
+  updateTournament() {
+    if (!this.id) return
+    const name: string = this.tForm.controls['name'].value?.toString() != undefined ? this.tForm.controls['name'].value?.toString() : "teste"
+    this.tournamentService.updateTournament(this.id, name, this.timer, this.rodadas, this.topCut).then(r => {
+      this.id = r.id;
+      this.router.navigate(['/criarTorneio', this.id]);
+    })
 
+  }
   incrementRodadas() {
     this.rodadas++;
   }

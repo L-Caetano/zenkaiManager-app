@@ -15,6 +15,13 @@ export class TournamentService {
         .subscribe(resolve, reject);
     });
   }
+  updateTournament(id: number, name: string, timer: number, rodadas: number, playOff: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .patch<any>(`${this.apiUrl}/tournaments/${id}/settings`, { name, timer, rodadas, playOff })
+        .subscribe(resolve, reject);
+    });
+  }
   createTournament(name: string, timer: number, rodadas: number, playOff: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
@@ -26,6 +33,13 @@ export class TournamentService {
     return new Promise((resolve, reject) => {
       this.http
         .post<any>(`${this.apiUrl}/tournaments/${id}/addPlayerToTournament`, { name })
+        .subscribe(resolve, reject);
+    });
+  }
+  getPlayersFromTournament(id: number) {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<any>(`${this.apiUrl}/tournaments/${id}/players`)
         .subscribe(resolve, reject);
     });
   }
