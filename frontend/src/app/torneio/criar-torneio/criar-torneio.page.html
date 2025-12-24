@@ -1,4 +1,6 @@
+
 <app-header></app-header>
+
 <ion-content class="arena-bg">
   <div class="container">
 
@@ -6,6 +8,7 @@
     <div class="logo">
       <img src="assets/zenkai-logo.png" />
     </div>
+
     <!-- RESUMO -->
     <ion-card class="glass-card">
       <ion-card-header>
@@ -18,117 +21,158 @@
       <ion-card-content class="resumo-mobile">
         <div>
           <small>Fase Inicial</small>
-          <strong>Suíço ({{rodadas}} Rds)</strong>
+          <strong>Suíço ({{ rodadas }} Rds)</strong>
         </div>
         <div>
           <small>Mata-Mata</small>
-          <strong>Final (Top {{topCut}})</strong>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-
-   <!-- CONFIGURAÇÕES -->
-    <ion-card class="glass-card">
-      <ion-card-header>
-        <ion-card-title class="title purple">
-          <ion-icon name="settings-outline"></ion-icon>
-          Configurações
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-<form [formGroup]="tForm">
-        <div class="field">
-          <label>Nome do Torneio</label>
-          <ion-input formControlName="name"  placeholder="Ex: Liga Zenkai"></ion-input>
-        </div>
-</form>
-        <div class="field">
-          <label>Rodadas</label>
-          <div class="counter full">
-            <ion-button fill="clear" (click)="rodadas != 1? rodadas=rodadas-1: null">-</ion-button>
-            <span>{{ rodadas }}</span>
-            <ion-button fill="clear"(click)="rodadas=rodadas+1">+</ion-button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Fase Eliminatória</label>
-          <div class="chips">
-            <ion-button  [ngClass]="{'active' : topCut == 2, 'chip': topCut !=2}" (click)="topCut=2" >Top 2</ion-button>
-            <ion-button  [ngClass]="{'active' : topCut ==4, 'chip' : topCut !=4}" (click)="topCut=4" (click)="topCut=4">Top 4</ion-button>
-            <ion-button  [ngClass]="{'active' : topCut ==8, 'chip' : topCut !=8}" (click)="topCut=8" (click)="topCut=8">Top 8</ion-button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Controle de Tempo</label>
-          <ion-button expand="block" class="ghost-btn" (click)="this.timer == 0 ? this.timer = 50 : this.timer = 0">
-            <ion-icon name="time-outline"></ion-icon>
-            @if(timer == 0){
-               Tempo Livre
-            }
-          @else {
-              50 Minutos
+          @if(topCut != 0){
+         <strong>Top {{ topCut }}</strong>
+          } @else {
+         <strong>Sem Top</strong>
           }
-          </ion-button>
         </div>
-
-      </ion-card-content>
-    </ion-card>
-    <!-- INSCRIÇÃO DE JOGADORES (PRIMEIRO NO MOBILE) -->
-    <ion-card class="glass-card">
-      <ion-card-header>
-        <div class="header-row">
-          <ion-card-title class="title green">
-            <ion-icon name="people-outline"></ion-icon>
-            Jogadores
-          </ion-card-title>
-
-          <span class="badge">0/30</span>
-        </div>
-      </ion-card-header>
-
-      <ion-card-content>
-
-        <div class="player-input">
-          <form [formGroup]="form">
-          <ion-input placeholder="Nome do Jogador" formControlName="playerControl" ></ion-input>
-          <ion-button (click)="addPlayer()" class="add-btn">+</ion-button>
-          </form>
-        </div>
-
-          @if (players.length > 0){
-            <ion-list [inset]="true">
-          <ion-item *ngFor="let player of players; let i = index">
-  {{ i + 1 }} - {{ player }}
-  <ion-button class="add-btn" (click)="removePlayer(i)">
-<ion-icon  name="trash-bin-outline"></ion-icon>
-  </ion-button>
-            </ion-item>
-            </ion-list>
-} @else {
-        <div class="empty-box">
-          <ion-icon name="people-outline"></ion-icon>
-
-          <p>Nenhum jogador inscrito</p>
-
-        </div>
-          }
-
-        <ion-button (click)="createTournament()" expand="block" class="start-btn">
-          <ion-icon name="play-outline"></ion-icon>
-          Iniciar Torneio
-        </ion-button>
-        @if(players.length < 4){
-        <p class="error-text">
-          Adicione pelo menos mais 4 jogadores.
-        </p>
-        }
       </ion-card-content>
     </ion-card>
 
+    <!-- ACCORDION -->
+    <ion-accordion-group expand="inset">
+
+      <!-- CONFIGURAÇÕES -->
+      <ion-accordion value="config">
+        <ion-item slot="header" class="accordion-header">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          <ion-label>Configurações</ion-label>
+        </ion-item>
+
+        <div slot="content">
+          <ion-card class="glass-card">
+            <ion-card-content>
+
+              <form [formGroup]="tForm">
+                <div class="field">
+                  <label>Nome do Torneio</label>
+                  <ion-input
+                    formControlName="name"
+                    placeholder="Ex: Liga Zenkai">
+                  </ion-input>
+                </div>
+              </form>
+
+              <div class="field">
+                <label>Rodadas</label>
+
+<div class="counter full">
+  <ion-button fill="clear" (click)="decrementRodadas()">-</ion-button>
+  <span>{{ rodadas }}</span>
+  <ion-button fill="clear" (click)="incrementRodadas()">+</ion-button>
+</div>
+              </div>
+
+              <div class="field">
+                <label>Fase Eliminatória</label>
+                <div class="chips">
+                  <ion-button
+                    [ngClass]="{ 'active': topCut === 0, 'chip': topCut !== 0 }"
+                    (click)="topCut = 0">Sem Top</ion-button>
+                  <ion-button
+                    [ngClass]="{ 'active': topCut === 2, 'chip': topCut !== 2 }"
+                    (click)="topCut = 2">Top 2</ion-button>
+
+                  <ion-button
+                    [ngClass]="{ 'active': topCut === 4, 'chip': topCut !== 4 }"
+                    (click)="topCut = 4">Top 4</ion-button>
+
+                  <ion-button
+                    [ngClass]="{ 'active': topCut === 8, 'chip': topCut !== 8 }"
+                    (click)="topCut = 8">Top 8</ion-button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Controle de Tempo</label>
+                <ion-button
+                  expand="block"
+                  class="ghost-btn"
+                  (click)="timer = timer === 0 ? 50 : 0">
+                  <ion-icon name="time-outline"></ion-icon>
+                  {{ timer === 0 ? 'Tempo Livre' : '50 Minutos' }}
+                </ion-button>
+              </div>
+              <ion-button
+                expand="block"
+                class="start-btn"
+                (click)="createTournament()">
+                <ion-icon name="play-outline"></ion-icon>
+                  Criar Torneio
+              </ion-button>
+
+
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </ion-accordion>
+
+      <!-- JOGADORES -->
+      <ion-accordion value="players" [disabled]="id == null">
+        <ion-item slot="header" class="accordion-header">
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label>Jogadores</ion-label>
+          <ion-badge slot="end">{{ players.length }}/30</ion-badge>
+        </ion-item>
+
+        <div slot="content">
+          <ion-card class="glass-card">
+            <ion-card-content>
+
+              <div class="player-input">
+                <form [formGroup]="form">
+                  <ion-input
+                    placeholder="Nome do Jogador"
+                    formControlName="playerControl">
+                  </ion-input>
+                  <ion-button (click)="addPlayer()" class="add-btn">+</ion-button>
+                </form>
+              </div>
+
+              @if (players.length > 0) {
+                <ion-list inset>
+                  <ion-item *ngFor="let player of players; let i = index">
+                    {{ i + 1 }} - {{ player }}
+                    <ion-button
+                      fill="clear"
+                      class="add-btn"
+                      (click)="removePlayer(i)">
+                      <ion-icon name="trash-bin-outline"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                </ion-list>
+              } @else {
+                <div class="empty-box">
+                  <ion-icon name="people-outline"></ion-icon>
+                  <p>Nenhum jogador inscrito</p>
+                </div>
+              }
+
+              <ion-button
+                expand="block"
+                class="start-btn"
+                (click)="createTournament()">
+                <ion-icon name="play-outline"></ion-icon>
+                Iniciar Torneio
+              </ion-button>
+
+              @if (players.length < 4) {
+                <p class="error-text">
+                  Adicione pelo menos mais 4 jogadores.
+                </p>
+              }
+
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
 
   </div>
 </ion-content>

@@ -8,11 +8,24 @@ export class TournamentService {
   private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) { }
-
-  createTournament(name: string, timer: number, rodadas: number): Promise<any> {
+  getTournamentSettings(id: number) {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any>(`${this.apiUrl}/tournaments`, { name, timer, rodadas })
+        .get<any>(`${this.apiUrl}/tournaments/${id}/settings`)
+        .subscribe(resolve, reject);
+    });
+  }
+  createTournament(name: string, timer: number, rodadas: number, playOff: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post<any>(`${this.apiUrl}/tournaments`, { name, timer, rodadas, playOff })
+        .subscribe(resolve, reject);
+    });
+  }
+  addNewPlayerToTournament(name: string, id: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post<any>(`${this.apiUrl}/tournaments/${id}/addPlayerToTournament`, { name })
         .subscribe(resolve, reject);
     });
   }

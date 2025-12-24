@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TournamentsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async getPlayers(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
@@ -55,9 +55,9 @@ export class TournamentsService {
     });
   }
 
-  async create(name: string, timer: number, rodadas: number) {
+  async create(name: string, timer: number, rodadas: number, playOff: number) {
     return this.prisma.tournament.create({
-      data: { name, timer, rodadas },
+      data: { name, timer, rodadas, playOff },
     });
   }
 
@@ -120,5 +120,52 @@ export class TournamentsService {
       tournamentId,
       matchesGenerated: matches.length,
     };
+  }
+
+  async getTournamentSettings(tournamentId: number) {
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+      select: {
+        id: true,
+        name: true,
+        rodadas: true,
+        playOff: true,
+        timer: true,
+      },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Tournament not found');
+    }
+
+    return tournament;
+  }
+
+  async createPlayerAndAddToTournament(
+    tournamentId: number,
+    playerName: string,
+  ) {
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException('Tournament not found');
+    }
+
+    if (!playerName || playerName.trim().length === 0) {
+      throw new BadRequestException('Player name is required');
+    }
+
+    const player = await this.prisma.player.create({
+      data: {
+        name: playerName,
+        tournaments: {
+          connect: { id: tournamentId },
+        },
+      },
+    });
+
+    return player;
   }
 }

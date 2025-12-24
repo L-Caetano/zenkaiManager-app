@@ -2,6 +2,11 @@
   --background: radial-gradient(circle at top, #0b1020, #050814);
 }
 
+.accordion-header {
+  --background: transparent;
+  --color: white;
+  font-weight: bold;
+}
 .container {
   padding: 16px;
 }
