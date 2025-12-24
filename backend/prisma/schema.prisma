@@ -11,12 +11,45 @@ datasource db {
 model Tournament {
   id        Int      @id @default(autoincrement())
   name      String
-  timer Int @default(0)
+  timer     Int      @default(0)
+  rodadas   Int      @default(1)
+  playOff   Int?
   createdAt DateTime @default(now())
-  rodadas Int @default(1)
-  playOff Int?
+
   players Player[] @relation("TournamentPlayers")
-  matches Match[]  @relation("TournamentMatches")
+  rounds  Round[]
+}
+
+model Round {
+  id           Int      @id @default(autoincrement())
+  number       Int
+  finished     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  tournamentId Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+
+  matches Match[]
+
+  @@unique([tournamentId, number])
+}
+
+model Match {
+  id        Int      @id @default(autoincrement())
+  roundId   Int
+  playerAId Int
+  playerBId Int
+  scoreA    Int?     @default(0)
+  scoreB    Int?     @default(0)
+  finished  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  round   Round @relation(fields: [roundId], references: [id])
+
+  playerA Player @relation("PlayerA", fields: [playerAId], references: [id])
+  playerB Player @relation("PlayerB", fields: [playerBId], references: [id])
+
+  @@unique([roundId, playerAId, playerBId])
 }
 
 model Player {
@@ -29,22 +62,5 @@ model Player {
 
   matchesA Match[] @relation("PlayerA")
   matchesB Match[] @relation("PlayerB")
-}
-
-model Match {
-  id           Int      @id @default(autoincrement())
-  tournamentId Int
-  playerAId    Int
-  playerBId    Int
-  scoreA       Int? @default(0)
-  scoreB       Int? @default(0)
-  finished     Boolean  @default(false)
-  createdAt    DateTime @default(now())
-
-  tournament Tournament @relation("TournamentMatches", fields: [tournamentId], references: [id])
-
-  playerA Player @relation("PlayerA", fields: [playerAId], references: [id])
-  playerB Player @relation("PlayerB", fields: [playerBId], references: [id])
-  @@unique([tournamentId, playerAId, playerBId])
 }
 

@@ -43,5 +43,21 @@ export class TournamentService {
         .subscribe(resolve, reject);
     });
   }
+
+
+removePlayer(playerId: number, tournamentId: number): Promise<any> {
+  return new Promise((resolve, reject) => {
+    this.http
+      .delete<any>(
+        `${this.apiUrl}/tournaments/${tournamentId}/players`,
+        {
+          body: [playerId], // 👈 sempre array (igual ao backend)
+        }
+      )
+      .subscribe(resolve, reject);
+  });
+}
+
+
 }
 
