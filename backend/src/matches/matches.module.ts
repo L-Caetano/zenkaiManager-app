@@ -6,5 +6,6 @@ import { PlayersModule } from '../players/players.module';
   controllers: [MatchesController],
   providers: [MatchesService],
   imports: [PlayersModule],
+  exports: [MatchesService]
 })
 export class MatchesModule { }

@@ -105,7 +105,7 @@ export class CriarTorneioPage implements OnInit {
   startTournament() {
     if (!this.id) return
     this.tournamentService.startTournament(this.id).then(r => {
-
+      console.log('con', r)
     })
   }
 }

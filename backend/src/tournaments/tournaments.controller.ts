@@ -12,7 +12,7 @@ import { TournamentsService } from './tournaments.service';
 import { UpdateTournamentSettingsDto } from '../../DTOs/update-tournament-settings.dto';
 @Controller('tournaments')
 export class TournamentsController {
-  constructor(private service: TournamentsService) {}
+  constructor(private service: TournamentsService) { }
 
   @Post()
   create(
@@ -42,9 +42,9 @@ export class TournamentsController {
   getSettings(@Param('id') id: string) {
     return this.service.getTournamentSettings(Number(id));
   }
-  @Post(':id/generate-matches')
+  @Post(':id/startTournament')
   generateMatches(@Param('id') id: string) {
-    return this.service.generateMatches(+id);
+    return this.service.startTournament(+id);
   }
   @Get(':id/matches')
   getMatches(@Param('id') id: string) {
@@ -67,5 +67,9 @@ export class TournamentsController {
   @Post(':id/addPlayerToTournament')
   addPlayerToTournament(@Param('id') id: string, @Body('name') name: string) {
     return this.service.createPlayerAndAddToTournament(Number(id), name);
+  }
+  @Get(':id')
+  getTournament(@Param('id') id) {
+    return this.service.getTournament(+id);
   }
 }

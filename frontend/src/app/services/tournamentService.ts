@@ -65,5 +65,12 @@ export class TournamentService {
     });
 
   }
+  getTournament(id: number) {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<any>(`${this.apiUrl}/tournaments/${id}`)
+        .subscribe(resolve, reject);
+    });
+  }
 }
 

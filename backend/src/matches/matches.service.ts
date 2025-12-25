@@ -17,10 +17,36 @@ export class MatchesService {
     private prisma: PrismaService,
   ) { }
 
-  create(tournamentId: string, playerA: string, playerB: string): Match {
-    const match = new Match(randomUUID(), tournamentId, playerA, playerB);
-    this.matches.push(match);
-    return match;
+  async create(roundId: number, players) {
+
+    // ROUND-ROBIN
+    const matches: {
+      playerAId: number;
+      playerBId: number;
+      roundId: number;
+    }[] = [];
+
+
+    for (let i = 0; i < players.length; i++) {
+      for (let j = i + 1; j < players.length; j++) {
+        const a = players[i].id;
+        const b = players[j].id;
+
+
+        matches.push({
+          playerAId: Math.min(a, b),
+          playerBId: Math.max(a, b),
+          roundId: roundId,
+        });
+
+      }
+    }
+
+    return await this.prisma.match.createMany({
+      data: matches,
+      skipDuplicates: true,
+    });
+
   }
 
   findByTournament(tournamentId: string): Match[] {

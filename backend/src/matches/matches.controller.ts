@@ -15,8 +15,8 @@ export class MatchesController {
 
   @Post()
   create(@Body() body: any) {
-    const { tournamentId, playerA, playerB } = body;
-    return this.service.create(tournamentId, playerA, playerB);
+    const { roundId, players } = body;
+    return this.service.create(roundId, players);
   }
 
   @Get()

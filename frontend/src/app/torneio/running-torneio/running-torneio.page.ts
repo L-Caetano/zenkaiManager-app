@@ -7,6 +7,7 @@ import { Match } from 'src/app/models/match';
 import { ReportarResultadoComponent } from './reportar-resultado/reportar-resultado.component';
 import { MatchesComponent } from './matches/matches.component';
 import { TorneioRankingComponent } from './ranking/torneio-ranking/torneio-ranking.component';
+import { TournamentService } from 'src/app/services/tournamentService';
 
 @Component({
   selector: 'app-running-torneio',
@@ -17,15 +18,23 @@ import { TorneioRankingComponent } from './ranking/torneio-ranking/torneio-ranki
 
 })
 export class RunningTorneioPage implements OnInit {
-  public rodadas: number = 1;
-  public topCut: number = 2;
-  public timer: number = 50;
+  public rodadas: number = 0;
+  public topCut: number = 0;
+  public timer: number = 0;
+  public name: string = '';
   public matches: Match[] = []
 
-  constructor(private modalCtrl: ModalController, private activatedRoute: ActivatedRoute,) { }
+  constructor(private modalCtrl: ModalController, private activatedRoute: ActivatedRoute, private tournamentService: TournamentService) { }
 
   ngOnInit() {
-    const requestNumber = this.activatedRoute.snapshot.paramMap.get('id')
+    const tournamentId = this.activatedRoute.snapshot.paramMap.get('id')
+    this.tournamentService.getTournament(Number(tournamentId)).then((r: any) => {
+      console.log('teste', r)
+      this.rodadas = r.rodadas;
+      this.timer = r.timer
+      this.name = r.name
+      this.topCut = r.playOff
+    })
   }
 
   async reportarResultado() {
