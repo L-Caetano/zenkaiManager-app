@@ -20,7 +20,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'runningTorneio',
+    path: 'runningTorneio/:id',
     loadComponent: () => import('./torneio/running-torneio/running-torneio.page').then(m => m.RunningTorneioPage)
   },
 ];

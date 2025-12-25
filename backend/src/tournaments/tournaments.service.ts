@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UpdateTournamentSettingsDto } from '../../DTOs/update-tournament-settings.dto';
 @Injectable()
 export class TournamentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async getPlayers(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
@@ -39,7 +39,11 @@ export class TournamentsService {
     }
 
     return this.prisma.match.findMany({
-      where: { tournamentId },
+      where: {
+        round: {
+          tournamentId,
+        },
+      },
       orderBy: [
         { finished: 'asc' }, // não finalizados primeiro
         { createdAt: 'asc' },
@@ -90,10 +94,16 @@ export class TournamentsService {
       throw new BadRequestException('Not enough players');
     }
 
+    const round = await this.prisma.round.create({
+      data: {
+        number: 1,
+        tournamentId: tournament.id,
+      },
+    });
     const matches: {
       playerAId: number;
       playerBId: number;
-      tournamentId: number;
+      roundId: number;
     }[] = [];
 
     // ROUND-ROBIN
@@ -103,11 +113,13 @@ export class TournamentsService {
         const a = players[i].id;
         const b = players[j].id;
 
+
         matches.push({
           playerAId: Math.min(a, b),
           playerBId: Math.max(a, b),
-          tournamentId: tournament.id,
+          roundId: round.id,
         });
+
       }
     }
 
@@ -205,16 +217,6 @@ export class TournamentsService {
     }
 
     return this.prisma.$transaction([
-      this.prisma.match.deleteMany({
-        where: {
-          tournamentId,
-          OR: [
-            { playerAId: { in: playerIds } },
-            { playerBId: { in: playerIds } },
-          ],
-        },
-      }),
-
       this.prisma.tournament.update({
         where: { id: tournamentId },
         data: {

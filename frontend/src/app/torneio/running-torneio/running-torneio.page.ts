@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { HeaderComponent } from 'src/app/header/header.component';
@@ -21,6 +22,11 @@ export class RunningTorneioPage implements OnInit {
   public timer: number = 50;
   public matches: Match[] = []
 
+  constructor(private modalCtrl: ModalController, private activatedRoute: ActivatedRoute,) { }
+
+  ngOnInit() {
+    const requestNumber = this.activatedRoute.snapshot.paramMap.get('id')
+  }
 
   async reportarResultado() {
     const modal = await this.modalCtrl.create({
@@ -34,9 +40,7 @@ export class RunningTorneioPage implements OnInit {
       //    this.message = `Hello, ${data}!`;
     }
   }
-  constructor(private modalCtrl: ModalController) { }
 
-  ngOnInit() {
-  }
+
 
 }

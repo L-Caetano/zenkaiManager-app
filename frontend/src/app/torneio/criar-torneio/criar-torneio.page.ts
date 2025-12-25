@@ -33,9 +33,7 @@ export class CriarTorneioPage implements OnInit {
     const requestNumber = this.activatedRoute.snapshot.paramMap.get('id')
     if (requestNumber) {
       this.tournamentService.getTournamentSettings(Number(requestNumber)).then((r: any) => {
-        console.log("rrr", r)
-
-      this.toggleAccordion("players")
+        this.toggleAccordion("players")
         this.id = Number(r.id);
         this.tForm.controls.name.setValue(r.name)
         this.topCut = r.playOff != null ? r.playOff : 0
@@ -71,9 +69,9 @@ export class CriarTorneioPage implements OnInit {
     })
   }
   removePlayer(i: number) {
-    if(!this.players || !this.id) return
-    this.tournamentService.removePlayer(this.players[i].id,this.id).then(r => {
-    this.players.splice(i, 1)
+    if (!this.players || !this.id) return
+    this.tournamentService.removePlayer(this.players[i].id, this.id).then(r => {
+      this.players.splice(i, 1)
     })
   }
   timerChange() {
@@ -103,5 +101,11 @@ export class CriarTorneioPage implements OnInit {
     if (this.rodadas > 1) {
       this.rodadas--;
     }
+  }
+  startTournament() {
+    if (!this.id) return
+    this.tournamentService.startTournament(this.id).then(r => {
+
+    })
   }
 }
