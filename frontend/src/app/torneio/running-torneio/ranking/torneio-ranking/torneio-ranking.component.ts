@@ -3,7 +3,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 
-import { Player } from 'src/app/models/player';
 import { RankingService } from 'src/app/services/rankingService';
 @Component({
   selector: 'app-torneio-ranking',

@@ -2,9 +2,10 @@
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Input, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Match, MatchesService } from '../../../services/matchesService';
+import { MatchesService } from '../../../services/matchesService';
 import { CommonModule } from '@angular/common';
 import { ReportarResultadoComponent } from '../reportar-resultado/reportar-resultado.component';
+import { MatchEntity } from 'src/app/models/match';
 
 @Component({
   selector: 'app-matches',
@@ -13,7 +14,7 @@ import { ReportarResultadoComponent } from '../reportar-resultado/reportar-resul
   imports: [CommonModule, IonicModule]
 })
 export class MatchesComponent implements OnInit {
-  @Input() matches: Match[] = [];
+  @Input() matches: MatchEntity[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,7 @@ export class MatchesComponent implements OnInit {
   }
 
   async reportarResultado(i: number) {
+    if (!this.matches) return
     const modal = await this.modalCtrl.create({
       component: ReportarResultadoComponent,
       componentProps: {

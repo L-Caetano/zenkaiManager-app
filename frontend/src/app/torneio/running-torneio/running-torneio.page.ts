@@ -7,7 +7,8 @@ import { MatchesComponent } from './matches/matches.component';
 import { TorneioRankingComponent } from './ranking/torneio-ranking/torneio-ranking.component';
 import { TournamentService } from 'src/app/services/tournamentService';
 
-import { Match } from '../../services/matchesService';
+import { TournamentEntity } from 'src/app/models/tournament';
+import { RoundEntity } from 'src/app/models/round';
 @Component({
   selector: 'app-running-torneio',
   templateUrl: './running-torneio.page.html',
@@ -17,30 +18,44 @@ import { Match } from '../../services/matchesService';
 
 })
 export class RunningTorneioPage implements OnInit {
-  public rodadas: number = 0;
-  public topCut: number = 0;
-  public timer: number = 0;
-  public name: string = '';
-  public matches: Match[] = []
-  public players: any;
-  public tournamentId: number = 0
+
+  public tournament: TournamentEntity =
+    {
+      id: 0,
+      name: '',
+      timer: 0,
+      rodadas: 0,
+      playOff: 0,
+      createdAt: new Date(),
+      players: [],
+      rounds: [],
+    };
   constructor(private activatedRoute: ActivatedRoute, private tournamentService: TournamentService) { }
 
+  getCurrentRound(): RoundEntity {
+    if (!this.tournament?.rounds || this.tournament.rounds.length === 0) {
+      return {
+        id: 0,
+        number: 0,        // rodada 1,2,3...
+        finished: false,
+        createdAt: new Date()
+
+      }
+
+    }
+    const current = this.tournament.rounds.find(r => !r.finished);
+
+    return current ?? this.tournament.rounds[this.tournament.rounds.length - 1];
+  }
   ngOnInit() {
     const tournamentId = this.activatedRoute.snapshot.paramMap.get('id')
-    this.tournamentService.getTournament(Number(tournamentId)).then((r: any) => {
-      console.log('teste', r)
-      this.matches = r.rounds[r.rounds.length - 1].matches
-      this.tournamentId = r.id
-      this.rodadas = r.rodadas;
-      this.timer = r.timer
-      this.name = r.name
-      this.topCut = r.playOff
-      this.players = r.players
+    this.tournamentService.getTournament(Number(tournamentId)).then((r: TournamentEntity) => {
+      console.log('testaaaaaae', r)
+      this.tournament = r;
     })
   }
   gerarNovaRodada() {
-    this.tournamentService.gerarRound(this.tournamentId)
+    this.tournamentService.gerarRound(this.tournament.id)
   }
 
 

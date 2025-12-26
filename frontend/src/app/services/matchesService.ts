@@ -1,15 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatchEntity } from '../models/match';
 
-
-export interface Match {
-  id: number;
-  finished: boolean;
-  scoreA: number | null;
-  scoreB: number | null;
-  playerA: { id: number; name: string };
-  playerB: { id: number; name: string };
-}
 
 @Injectable({
   providedIn: 'root',
@@ -19,9 +11,9 @@ export class MatchesService {
 
   constructor(private http: HttpClient) { }
 
-  getTournamentMatches(tournamentId: number): Promise<Match[]> {
+  getTournamentMatches(tournamentId: number): Promise<MatchEntity[]> {
     return new Promise((resolve, reject) => {
-      this.http.get<Match[]>(`${this.apiUrl}/tournaments/${tournamentId}/matches`).subscribe(resolve, reject);
+      this.http.get<MatchEntity[]>(`${this.apiUrl}/tournaments/${tournamentId}/matches`).subscribe(resolve, reject);
 
     })
   }

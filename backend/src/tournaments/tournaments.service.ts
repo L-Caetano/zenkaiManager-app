@@ -9,13 +9,15 @@ import { RoundService } from 'src/round/round.service';
 import { MatchesService } from 'src/matches/matches.service';
 
 import { Prisma } from '@prisma/client';
+import { TournamentsRepository } from './tournament.repository';
 @Injectable()
 export class TournamentsService {
   constructor(
     private prisma: PrismaService,
     private matchesService: MatchesService,
     private roundService: RoundService,
-  ) {}
+    private tournamentRepo: TournamentsRepository
+  ) { }
 
   async getPlayers(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
@@ -88,20 +90,7 @@ export class TournamentsService {
   }
 
   async generateSwissRound(tournamentId: number) {
-    const tournament = await this.prisma.tournament.findUnique({
-      where: { id: tournamentId },
-      include: {
-        players: {
-          orderBy: { pts: 'desc' },
-        },
-        rounds: {
-          include: {
-            matches: true,
-          },
-        },
-      },
-    });
-
+    const tournament = await this.tournamentRepo.getTournamentWithCurrentRound(tournamentId)
     if (!tournament) {
       throw new Error('Tournament not found');
     }
@@ -109,16 +98,33 @@ export class TournamentsService {
     if (nextRoundNumber > tournament.rodadas) {
       throw new Error('limite de rodadas excedido');
     }
+    if (tournament.rounds.length > 0) {
+      const currentRound = tournament.rounds
+        .sort((a, b) => a.number - b.number)
+        .find(round => !round.finished);
 
-    await this.prisma.round.update({
-      where: {
-        tournamentId_number: {
-          tournamentId: tournamentId,
-          number: tournament.rounds.length,
+      if (!currentRound) {
+        throw new BadRequestException('No active round found');
+      }
+
+      const unfinishedMatches = await this.prisma.match.count({
+        where: {
+          roundId: currentRound.id,
+          finished: false,
         },
-      },
-      data: { finished: true },
-    });
+      });
+
+      if (unfinishedMatches > 0) {
+        throw new BadRequestException(
+          'All matches must be finished before generating the next swiss round'
+        );
+      }
+      await this.prisma.round.update({
+        where: { id: currentRound.id },
+        data: { finished: true },
+      });
+    }
+
 
     const round = await this.prisma.round.create({
       data: {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TournamentEntity } from '../models/tournament';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +66,7 @@ export class TournamentService {
     });
 
   }
-  getTournament(id: number) {
+  getTournament(id: number): Promise<TournamentEntity> {
     return new Promise((resolve, reject) => {
       this.http
         .get<any>(`${this.apiUrl}/tournaments/${id}`)

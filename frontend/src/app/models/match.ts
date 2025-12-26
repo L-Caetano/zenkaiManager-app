@@ -1,9 +1,14 @@
-import { Player } from "./player";
+import { PlayerEntity } from "./player";
+export interface MatchEntity {
+  id: number;
 
-export class Match {
-    public result = { a : 0, b: 0}
-  constructor(
-    public a: Player,
-    public b: Player
-  ) {}
+  playerA: PlayerEntity;
+  playerB: PlayerEntity;
+
+  scoreA: number;
+  scoreB: number;
+
+  finished: boolean;
+  createdAt: Date;
 }
+

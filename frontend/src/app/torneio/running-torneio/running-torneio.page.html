@@ -4,7 +4,7 @@
   <!-- HEADER -->
   <div class="top-header">
     <div>
-      <h2>{{name}}</h2>
+      <h2>{{tournament.name}}</h2>
       <span class="phase">
         <span class="dot"></span> FASE SUÍÇA
       </span>
@@ -12,22 +12,26 @@
 
     <ion-button fill="outline" size="small">
       <ion-icon name="time-outline"></ion-icon>
-      @if(timer > 0){
-        {{timer}} Min
+      @if(tournament.timer > 0){
+        {{tournament.timer}} Min
       } @else {
         Tempo Livre
       }
     </ion-button>
   </div>
 
-<app-torneio-ranking [players]="players"></app-torneio-ranking>
+<app-torneio-ranking [players]="tournament.players"></app-torneio-ranking>
   <!-- RODADA -->
   <div class="round-header">
-    <h3>Rodada 1</h3>
+    <h3>Rodada {{tournament.rounds[0]?.number}}</h3>
     <span class="status">Em andamento</span>
   </div>
 
- <app-matches [matches]="matches"></app-matches>
+<ng-container *ngIf="tournament as t">
+  <ng-container *ngIf="t.rounds.length > 0 && t.rounds[0].matches">
+    <app-matches [matches]="t.rounds[0].matches"></app-matches>
+  </ng-container>
+</ng-container>
  <!-- ACTION -->
   <ion-button expand="block" class="next-btn" (click)="gerarNovaRodada()">
     Próxima Rodada
