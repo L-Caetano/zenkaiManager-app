@@ -1,9 +1,10 @@
 
-import { IonicModule } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { Input, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Match, MatchesService } from '../../../services/matchesService';
 import { CommonModule } from '@angular/common';
+import { ReportarResultadoComponent } from '../reportar-resultado/reportar-resultado.component';
 
 @Component({
   selector: 'app-matches',
@@ -12,37 +13,34 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, IonicModule]
 })
 export class MatchesComponent implements OnInit {
-  tournamentId!: number;
-  matches: Match[] = [];
+  @Input() matches: Match[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private matchesService: MatchesService
-  ) { }
+    private matchesService: MatchesService,
+    private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    // this.tournamentId = Number(this.route.snapshot.paramMap.get('id'));
-    this.tournamentId = 1;
-    this.loadMatches();
-  }
-  reportarResultado() {
   }
 
+  async reportarResultado(i: number) {
+    const modal = await this.modalCtrl.create({
+      component: ReportarResultadoComponent,
+      componentProps: {
+        'match': this.matches[i]
+      }
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      //    this.message = `Hello, ${data}!`;
+    }
+  }
 
   loadMatches() {
-    this.matchesService.getTournamentMatches(
-      this.tournamentId
-    ).then((r: Match[]) => {
-      this.matches = r
 
-      console.log("teste: ", this.matches)
-    });
   }
-  finishMatch(match: Match) {
-    if (match.scoreA == null || match.scoreB == null) return;
 
-    this.matchesService
-      .finishMatch(match.id, match.scoreA, match.scoreB)
-      .subscribe(() => this.loadMatches());
-  }
 }

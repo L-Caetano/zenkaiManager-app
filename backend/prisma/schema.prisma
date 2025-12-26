@@ -25,7 +25,7 @@ model Round {
   number       Int
   finished     Boolean  @default(false)
   createdAt    DateTime @default(now())
-
+  type         RoundType @default(SWISS)
   tournamentId Int
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
 
@@ -57,10 +57,13 @@ model Player {
   name      String
   pts       Int      @default(0)
   createdAt DateTime @default(now())
-
+  eliminated Boolean @default(false)
   tournaments Tournament[] @relation("TournamentPlayers")
 
   matchesA Match[] @relation("PlayerA")
   matchesB Match[] @relation("PlayerB")
 }
-
+enum RoundType {
+  SWISS
+  PLAYOFF
+}

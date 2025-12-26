@@ -1,23 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { MatchesService } from './matches.service';
 
 @Controller('matches')
 export class MatchesController {
-  constructor(private service: MatchesService) { }
-
-  @Post()
-  create(@Body() body: any) {
-    const { roundId, players } = body;
-    return this.service.create(roundId, players);
-  }
+  constructor(private service: MatchesService) {}
 
   @Get()
   findByTournament(@Query('tournamentId') tournamentId: string) {

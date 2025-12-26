@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Match } from './match.model';
-import { randomUUID } from 'crypto';
 import { PlayersService } from '../players/players.service';
 
 @Injectable()
@@ -15,39 +14,7 @@ export class MatchesService {
   constructor(
     private playersService: PlayersService,
     private prisma: PrismaService,
-  ) { }
-
-  async create(roundId: number, players) {
-
-    // ROUND-ROBIN
-    const matches: {
-      playerAId: number;
-      playerBId: number;
-      roundId: number;
-    }[] = [];
-
-
-    for (let i = 0; i < players.length; i++) {
-      for (let j = i + 1; j < players.length; j++) {
-        const a = players[i].id;
-        const b = players[j].id;
-
-
-        matches.push({
-          playerAId: Math.min(a, b),
-          playerBId: Math.max(a, b),
-          roundId: roundId,
-        });
-
-      }
-    }
-
-    return await this.prisma.match.createMany({
-      data: matches,
-      skipDuplicates: true,
-    });
-
-  }
+  ) {}
 
   findByTournament(tournamentId: string): Match[] {
     return this.matches.filter((m) => m.tournamentId === tournamentId);

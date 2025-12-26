@@ -27,10 +27,13 @@ export class MatchesService {
   }
 
   finishMatch(matchId: number, scoreA: number, scoreB: number) {
-    return this.http.patch(
-      `${this.apiUrl}/matches/${matchId}/result`,
-      { scoreA, scoreB }
-    );
+
+    return new Promise((resolve, reject) => {
+      this.http.patch(
+        `${this.apiUrl}/matches/${matchId}/result`,
+        { scoreA, scoreB }
+      ).subscribe(resolve, reject)
+    })
   }
 }
 

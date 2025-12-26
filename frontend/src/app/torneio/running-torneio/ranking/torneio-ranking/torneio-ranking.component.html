@@ -10,9 +10,9 @@
     <ion-card-content>
       <ion-list lines="none">
         <ion-item *ngFor="let player of players, let i = index" class="rank blue">
-          <span class="pos">1</span>
+          <span class="pos">{{i+1}} . </span>
           <span class="name"> {{player.name}}</span>
-          <span class="pts">{{player.pts}} pts</span>
+          <span class="pts"> ({{player.pts}} pts)</span>
         </ion-item>
      </ion-list>
     </ion-card-content>

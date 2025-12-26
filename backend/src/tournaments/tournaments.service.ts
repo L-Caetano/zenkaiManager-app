@@ -7,9 +7,15 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UpdateTournamentSettingsDto } from '../../DTOs/update-tournament-settings.dto';
 import { RoundService } from 'src/round/round.service';
 import { MatchesService } from 'src/matches/matches.service';
+
+import { Prisma } from '@prisma/client';
 @Injectable()
 export class TournamentsService {
-  constructor(private prisma: PrismaService, private matchesService: MatchesService, private roundService: RoundService) { }
+  constructor(
+    private prisma: PrismaService,
+    private matchesService: MatchesService,
+    private roundService: RoundService,
+  ) {}
 
   async getPlayers(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
@@ -80,30 +86,98 @@ export class TournamentsService {
       },
     });
   }
-  async startTournament(tournamentId: number) {
+
+  async generateSwissRound(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
       where: { id: tournamentId },
-      include: { players: true },
+      include: {
+        players: {
+          orderBy: { pts: 'desc' },
+        },
+        rounds: {
+          include: {
+            matches: true,
+          },
+        },
+      },
     });
 
     if (!tournament) {
-      throw new BadRequestException('Tournament not found');
+      throw new Error('Tournament not found');
+    }
+    const nextRoundNumber = tournament.rounds.length + 1;
+    if (nextRoundNumber > tournament.rodadas) {
+      throw new Error('limite de rodadas excedido');
     }
 
-    const players = tournament.players;
+    await this.prisma.round.update({
+      where: {
+        tournamentId_number: {
+          tournamentId: tournamentId,
+          number: tournament.rounds.length,
+        },
+      },
+      data: { finished: true },
+    });
 
-    if (players.length < 2) {
-      throw new BadRequestException('Not enough players');
+    const round = await this.prisma.round.create({
+      data: {
+        number: nextRoundNumber,
+        tournamentId,
+      },
+    });
+
+    // Histórico de confrontos
+    const played = new Set<string>();
+    tournament.rounds.forEach((r) => {
+      r.matches.forEach((m) => {
+        played.add([m.playerAId, m.playerBId].sort().join('-'));
+      });
+    });
+
+    const players = [...tournament.players];
+
+    const matches: Prisma.MatchCreateManyInput[] = [];
+
+    while (players.length >= 2) {
+      const p1 = players.shift();
+      if (!p1) break;
+
+      let opponentIndex = players.findIndex(
+        (p) => !played.has([p1.id, p.id].sort().join('-')),
+      );
+
+      if (opponentIndex === -1) opponentIndex = 0;
+
+      const p2 = players.splice(opponentIndex, 1)[0];
+      if (!p2) break;
+
+      matches.push({
+        roundId: round.id,
+        playerAId: p1.id,
+        playerBId: p2.id,
+      });
     }
 
-    const round = await this.roundService.createNewRound(tournamentId);
-    const matches = await this.matchesService.create(round.id, players);
+    // Bye
+    if (players.length === 1) {
+      await this.prisma.player.update({
+        where: { id: players[0].id },
+        data: { pts: { increment: 1 } },
+      });
+    }
+
+    await this.prisma.match.createMany({
+      data: matches,
+    });
+
     return {
-      tournamentId, round, matches
+      round,
+      matchesCreated: matches.length,
     };
   }
-  async getTournament(id) {
 
+  async getTournament(id: number) {
     const tournament = await this.prisma.tournament.findUnique({
       where: { id: id },
       include: {
@@ -128,7 +202,7 @@ export class TournamentsService {
         },
       },
     });
-    return tournament
+    return tournament;
   }
 
   async getTournamentSettings(tournamentId: number) {

@@ -57,10 +57,10 @@ export class TournamentService {
         .subscribe(resolve, reject);
     });
   }
-  startTournament(id: number) {
+  gerarRound(id: number) {
     return new Promise((resolve, reject) => {
       this.http
-        .post<any>(`${this.apiUrl}/tournaments/${id}/startTournament`, {})
+        .post<any>(`${this.apiUrl}/tournaments/${id}/generateRound`, {})
         .subscribe(resolve, reject);
     });
 

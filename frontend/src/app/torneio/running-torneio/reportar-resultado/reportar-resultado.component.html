@@ -15,12 +15,12 @@
 
     <!-- Player A -->
     <div class="player">
-      <div class="player-badge yellow">14</div>
+      <div class="player-badge yellow">{{match.playerA.name}}</div>
 
       <div class="score-control">
-        <button class="circle-btn">−</button>
-        <div class="score">0</div>
-        <button class="circle-btn primary">+</button>
+        <button class="circle-btn"  (click)="decreaseScore('A')">−</button>
+        <div class="score">{{result.scoreA}}</div>
+        <button class="circle-btn primary" (click)="increaseScore('A')">+</button>
       </div>
     </div>
 
@@ -28,12 +28,12 @@
 
     <!-- Player B -->
     <div class="player">
-      <div class="player-badge red">23</div>
+      <div class="player-badge red">{{match.playerB.name}}</div>
 
       <div class="score-control">
-        <button class="circle-btn">−</button>
-        <div class="score">0</div>
-        <button class="circle-btn primary">+</button>
+        <button class="circle-btn"  (click)="decreaseScore('B')">−</button>
+        <div class="score"  >{{result.scoreB}}</div>
+        <button class="circle-btn primary"  (click)="increaseScore('B')">+</button>
       </div>
     </div>
 
@@ -50,7 +50,7 @@
   </p>
 
   <!-- Actions -->
-  <ion-button expand="block" class="finish-btn" (click)="confirm()" disabled>
+  <ion-button expand="block" class="finish-btn" (click)="reportResult()">
     <ion-icon name="trophy-outline"  slot="start"></ion-icon>
     Finalizar Partida
   </ion-button>

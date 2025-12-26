@@ -3,12 +3,12 @@
     <div class="player blue">{{match.playerA.name}}</div>
 
     <div >
-      <strong>@if(match.scoreA == 0){{{match.scoreA}}}@else{0}</strong>
+      <strong>@if(match.scoreA != 0){{{match.scoreA}}}@else{0}</strong>
       <span>VS</span>
-      <strong>@if(match.scoreB == 0){{{match.scoreB}}}@else{0}</strong>
+      <strong>@if(match.scoreB != 0){{{match.scoreB}}}@else{0}</strong>
       </div>
 
     <div class="player green">{{match.playerB.name}}</div>
-  </ion-card>
-  <ion-button class="next-btn" (click)="reportarResultado()">Reportar Resultado</ion-button>
 
+  <ion-button class="next-btn" (click)="reportarResultado(i)">Reportar Resultado</ion-button>
+  </ion-card>

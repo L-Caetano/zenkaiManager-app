@@ -104,8 +104,10 @@ export class CriarTorneioPage implements OnInit {
   }
   startTournament() {
     if (!this.id) return
-    this.tournamentService.startTournament(this.id).then(r => {
+    this.tournamentService.gerarRound(this.id).then(r => {
       console.log('con', r)
+      this.router.navigate(['runningTorneio', this.id]);
+
     })
   }
 }

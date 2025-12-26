@@ -20,16 +20,16 @@
     </ion-button>
   </div>
 
-<app-torneio-ranking></app-torneio-ranking>
+<app-torneio-ranking [players]="players"></app-torneio-ranking>
   <!-- RODADA -->
   <div class="round-header">
     <h3>Rodada 1</h3>
     <span class="status">Em andamento</span>
   </div>
 
- <app-matches></app-matches>
+ <app-matches [matches]="matches"></app-matches>
  <!-- ACTION -->
-  <ion-button expand="block" class="next-btn">
+  <ion-button expand="block" class="next-btn" (click)="gerarNovaRodada()">
     Próxima Rodada
     <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
   </ion-button>
