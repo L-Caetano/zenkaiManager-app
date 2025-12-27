@@ -29,6 +29,9 @@ export class CriarTorneioPage implements OnInit {
   @ViewChild('accordionGroup', { static: true }) accordionGroup!: IonAccordionGroup;
   constructor(private fb: FormBuilder, private tournamentService: TournamentService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
+  canShowPlayers(): boolean {
+    return this.id != null && this.rodadas >= 1;
+  }
   ngOnInit() {
     const requestNumber = this.activatedRoute.snapshot.paramMap.get('id')
     if (requestNumber) {
@@ -81,7 +84,7 @@ export class CriarTorneioPage implements OnInit {
     const name: string = this.tForm.controls['name'].value?.toString() != undefined ? this.tForm.controls['name'].value?.toString() : "teste"
     this.tournamentService.createTournament(name, this.timer, this.rodadas, this.topCut).then(r => {
       this.id = r.id;
-      this.router.navigate(['/criarTorneio', this.id]);
+      this.router.navigate(['/torneio/criar', this.id]);
     })
   }
   updateTournament() {
@@ -89,7 +92,7 @@ export class CriarTorneioPage implements OnInit {
     const name: string = this.tForm.controls['name'].value?.toString() != undefined ? this.tForm.controls['name'].value?.toString() : "teste"
     this.tournamentService.updateTournament(this.id, name, this.timer, this.rodadas, this.topCut).then(r => {
       this.id = r.id;
-      this.router.navigate(['/criarTorneio', this.id]);
+      this.router.navigate(['/torneio/criar', this.id]);
     })
 
   }
@@ -106,7 +109,7 @@ export class CriarTorneioPage implements OnInit {
     if (!this.id) return
     this.tournamentService.gerarRound(this.id).then(r => {
       console.log('con', r)
-      this.router.navigate(['runningTorneio', this.id]);
+      this.router.navigate(['torneio/running', this.id]);
 
     })
   }

@@ -43,7 +43,7 @@
     <ion-accordion-group expand="inset" #accordionGroup>
 
       <!-- CONFIGURAÇÕES -->
-      <ion-accordion value="config">
+      <ion-accordion value="config" class="glass-card">
         <ion-item slot="header" class="accordion-header">
           <ion-icon name="settings-outline" slot="start"></ion-icon>
           <ion-label>Configurações</ion-label>
@@ -77,6 +77,7 @@
                 <label>Fase Eliminatória</label>
                 <div class="chips">
                   <ion-button
+
                     [ngClass]="{ 'active': topCut === 0, 'chip': topCut !== 0 }"
                     (click)="topCut = 0">Sem Top</ion-button>
                   <ion-button
@@ -129,7 +130,7 @@
       </ion-accordion>
 
       <!-- JOGADORES -->
-      <ion-accordion value="players" [disabled]="id == null">
+      <ion-accordion value="players" [disabled]="id == null" class="glass-card">
         <ion-item slot="header" class="accordion-header">
           <ion-icon name="people-outline" slot="start"></ion-icon>
           <ion-label>Jogadores</ion-label>

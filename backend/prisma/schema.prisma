@@ -15,7 +15,7 @@ model Tournament {
   rodadas   Int      @default(1)
   playOff   Int?
   createdAt DateTime @default(now())
-
+  finished Boolean @default(false)
   players Player[] @relation("TournamentPlayers")
   rounds  Round[]
 }

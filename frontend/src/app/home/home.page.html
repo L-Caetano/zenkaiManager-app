@@ -1,7 +1,70 @@
+
 <app-header></app-header>
-<ion-content>
-<div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+
+<ion-content class="arena-bg">
+  <div class="container">
+
+    <!-- LOGO -->
+    <div class="logo">
+      <img src="assets/zenkai-logo.png" alt="Zenkai Arena" />
+    </div>
+
+    <!-- AÇÕES -->
+    <ion-card class="glass-card">
+      <ion-card-content>
+        <ion-button
+          expand="block"
+          class="start-btn"
+          routerLink="/torneio/criar"
+        >
+          <ion-icon name="add-circle-outline"></ion-icon>
+          Criar Novo Torneio
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- TORNEIOS EM ANDAMENTO -->
+    <ion-card class="glass-card">
+      <ion-card-header>
+        <ion-card-title class="title purple">
+          <ion-icon name="trophy-outline"></ion-icon>
+          Torneios em Andamento
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <!-- LISTA -->
+
+<ion-list *ngIf="(tournaments?.length ?? 0) > 0; else empty">
+
+          <ion-item
+            button
+            *ngFor="let tournament of tournaments"
+            [routerLink]="['/torneio/running', tournament.id]"
+          >
+            <ion-label>
+              <h2>{{ tournament.name }}</h2>
+              <p>
+                Rodadas: {{ tournament.rodadas }} • Top-Cut:  {{tournament.playOff}}
+              </p>
+            </ion-label>
+
+            <ion-badge color="success">Em andamento</ion-badge>
+          </ion-item>
+        </ion-list>
+
+        <!-- EMPTY STATE -->
+        <ng-template #empty>
+          <div class="empty-box">
+            <ion-icon name="trophy-outline"></ion-icon>
+            <p>Nenhum torneio em andamento</p>
+          </div>
+        </ng-template>
+
+      </ion-card-content>
+    </ion-card>
+
   </div>
 </ion-content>
+

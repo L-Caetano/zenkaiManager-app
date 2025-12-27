@@ -18,4 +18,14 @@ export class TorneioRankingComponent implements OnInit {
   ngOnInit() {
   }
 
+  getPlayerGradient(index: number): string {
+    const hue = (index * 137.508) % 360; // Golden angle
+    return `
+    linear-gradient(
+      90deg,
+      hsl(${hue}, 80%, 55%) 0%,
+      hsl(${hue}, 80%, 45%) 100%
+    )
+  `;
+  }
 }

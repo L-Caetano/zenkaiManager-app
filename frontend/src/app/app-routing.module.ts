@@ -7,11 +7,11 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'criarTorneio/:id',
+    path: 'torneio/criar/:id',
     loadComponent: () => import('./torneio/criar-torneio/criar-torneio.page').then(m => m.CriarTorneioPage)
   },
   {
-    path: 'criarTorneio',
+    path: 'torneio/criar',
     loadComponent: () => import('./torneio/criar-torneio/criar-torneio.page').then(m => m.CriarTorneioPage)
   },
   {
@@ -20,7 +20,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'runningTorneio/:id',
+    path: 'torneio/running/:id',
     loadComponent: () => import('./torneio/running-torneio/running-torneio.page').then(m => m.RunningTorneioPage)
   },
 ];

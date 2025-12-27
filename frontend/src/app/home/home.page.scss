@@ -1,27 +1,116 @@
-#container {
-  text-align: center;
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* BACKGROUND PADRÃO */
+.arena-bg {
+  --background: linear-gradient(
+    180deg,
+    #0a0014 0%,
+    #120020 40%,
+    #1a0033 100%
+  );
 }
 
-#container strong {
+/* CONTAINER CENTRAL */
+.container {
+  padding: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 32px;
+
+  img {
+    max-width: 220px;
+    width: 100%;
+    filter: drop-shadow(0 0 12px rgba(163, 73, 255, 0.45));
+  }
+}
+
+/* GLASS CARD */
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* TÍTULOS */
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.title.purple {
+  color: #a855f7;
+}
+
+.title ion-icon {
   font-size: 20px;
-  line-height: 26px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+/* BOTÃO PRINCIPAL */
+.start-btn {
+  --background: linear-gradient(135deg, #9333ea, #6d28d9);
+  --color: #fff;
+  --border-radius: 14px;
+  height: 52px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
-#container a {
-  text-decoration: none;
+/* LISTA */
+ion-list {
+  background: transparent;
 }
+
+ion-item {
+  --background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+ion-item h2 {
+  font-weight: 600;
+  color: #fff;
+}
+
+ion-item p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* BADGE */
+ion-badge {
+  --background: #22c55e;
+  --color: #022c22;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* EMPTY STATE */
+.empty-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 0;
+  color: rgba(255, 255, 255, 0.6);
+
+  ion-icon {
+    font-size: 42px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+

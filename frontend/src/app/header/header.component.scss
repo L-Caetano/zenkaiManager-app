@@ -1,0 +1,45 @@
+
+.glass-header {
+  --background: rgba(10, 0, 20, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 12px;
+}
+
+/* CENTER */
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+}
+
+.title-wrapper img {
+  height: 28px;
+  filter: drop-shadow(0 0 8px rgba(163, 73, 255, 0.45));
+}
+
+.title-wrapper h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* BUTTONS */
+ion-button {
+  --color: #a855f7;
+}
+
+ion-icon {
+  font-size: 20px;
+}

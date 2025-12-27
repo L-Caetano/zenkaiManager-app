@@ -72,4 +72,8 @@ export class TournamentsController {
   getTournament(@Param('id') id) {
     return this.service.getTournament(+id);
   }
+  @Get('find/all')
+  getAllTournaments() {
+    return this.service.getAllTournaments();
+  }
 }

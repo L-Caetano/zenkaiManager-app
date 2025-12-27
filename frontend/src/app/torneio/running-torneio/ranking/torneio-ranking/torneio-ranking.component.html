@@ -1,19 +1,30 @@
 
-  <!-- CLASSIFICAÇÃO -->
-  <ion-card class="glass-card">
-    <ion-card-header>
-      <ion-card-title>
-        🏆 Classificação
-      </ion-card-title>
-    </ion-card-header>
 
-    <ion-card-content>
-      <ion-list lines="none">
-        <ion-item *ngFor="let player of players, let i = index" class="rank blue">
-          <span class="pos">{{i+1}} . </span>
-          <span class="name"> {{player.name}}</span>
-          <span class="pts"> ({{player.pts}} pts)</span>
-        </ion-item>
-     </ion-list>
-    </ion-card-content>
-  </ion-card>
+<!-- CLASSIFICAÇÃO -->
+<ion-card class="ranking-card">
+  <ion-card-header>
+    <ion-card-title>
+      🏆 Classificação
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div
+      class="ranking-row"
+      *ngFor="let player of players; let i = index"
+    >
+      <span class="pos">{{ i + 1 }}</span>
+
+      <div
+        class="bar"
+        [style.background]="getPlayerGradient(i)"
+      >
+        <span class="name">{{ player.name }}</span>
+        <span class="pts">{{ player.pts }} pts</span>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+
+

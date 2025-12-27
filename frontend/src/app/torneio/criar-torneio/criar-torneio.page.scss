@@ -1,6 +1,10 @@
 .arena-bg {
-  --background: radial-gradient(circle at top, #0b1020, #050814);
-}
+  --background: linear-gradient(
+    180deg,
+    #0b0218 0%,
+    #130026 60%,
+    #07000f 100%
+  );}
 
 .accordion-header {
   --background: transparent;
@@ -19,16 +23,24 @@
     height:200px;
   }
 }
+/* BOTÃO PRINCIPAL */
+.start-btn {
+  --background: linear-gradient(135deg, #9333ea, #6d28d9);
+  --color: #fff;
+  --border-radius: 14px;
+  height: 52px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
 
 .glass-card {
-  background: linear-gradient(
-    180deg,
-    rgba(30, 40, 70, 0.65),
-    rgba(15, 20, 40, 0.9)
-  );
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
   margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .header-row {
@@ -86,23 +98,13 @@
 }
 
 .chip.active {
-  --background: #4f46e5;
-  --color: #fff;
+  --background: linear-gradient(135deg, #9333ea, #6d28d9);
+ --color: #fff;
+
 }
 
-.empty-box {
-  border: 1px dashed rgba(255,255,255,0.15);
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
-  opacity: 0.6;
-  margin: 16px 0;
-}
 
-.start-btn {
-  --background: #4f46e5;
-  height: 48px;
-}
+
 
 .error-text {
   color: #ef4444;

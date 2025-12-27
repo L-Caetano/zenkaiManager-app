@@ -10,14 +10,18 @@ import { MatchesService } from 'src/matches/matches.service';
 
 import { Prisma } from '@prisma/client';
 import { TournamentsRepository } from './tournament.repository';
+import { RoundRepository } from 'src/round/round.repository';
+import { MatchRepository } from 'src/matches/match.repository';
 @Injectable()
 export class TournamentsService {
   constructor(
     private prisma: PrismaService,
+    private matchRepo: MatchRepository,
     private matchesService: MatchesService,
     private roundService: RoundService,
-    private tournamentRepo: TournamentsRepository
-  ) { }
+    private roundRepo: RoundRepository,
+    private tournamentRepo: TournamentsRepository,
+  ) {}
 
   async getPlayers(tournamentId: number) {
     const tournament = await this.prisma.tournament.findUnique({
@@ -90,7 +94,8 @@ export class TournamentsService {
   }
 
   async generateSwissRound(tournamentId: number) {
-    const tournament = await this.tournamentRepo.getTournamentWithCurrentRound(tournamentId)
+    const tournament =
+      await this.tournamentRepo.getTournamentAndAllRounds(tournamentId);
     if (!tournament) {
       throw new Error('Tournament not found');
     }
@@ -101,37 +106,28 @@ export class TournamentsService {
     if (tournament.rounds.length > 0) {
       const currentRound = tournament.rounds
         .sort((a, b) => a.number - b.number)
-        .find(round => !round.finished);
+        .find((round) => !round.finished);
 
       if (!currentRound) {
         throw new BadRequestException('No active round found');
       }
 
-      const unfinishedMatches = await this.prisma.match.count({
-        where: {
-          roundId: currentRound.id,
-          finished: false,
-        },
-      });
+      const unfinishedMatches = await this.matchRepo.countUnfinishedMatches(
+        currentRound.id,
+      );
 
       if (unfinishedMatches > 0) {
         throw new BadRequestException(
-          'All matches must be finished before generating the next swiss round'
+          'All matches must be finished before generating the next swiss round',
         );
       }
-      await this.prisma.round.update({
-        where: { id: currentRound.id },
-        data: { finished: true },
-      });
+      await this.roundRepo.updateFinishRound(currentRound.id);
     }
 
-
-    const round = await this.prisma.round.create({
-      data: {
-        number: nextRoundNumber,
-        tournamentId,
-      },
-    });
+    const round = await this.roundRepo.createNewRound(
+      nextRoundNumber,
+      tournament.id,
+    );
 
     // Histórico de confrontos
     const played = new Set<string>();
@@ -173,9 +169,7 @@ export class TournamentsService {
       });
     }
 
-    await this.prisma.match.createMany({
-      data: matches,
-    });
+    await this.matchRepo.createManyMatches(matches);
 
     return {
       round,
@@ -184,44 +178,14 @@ export class TournamentsService {
   }
 
   async getTournament(id: number) {
-    const tournament = await this.prisma.tournament.findUnique({
-      where: { id: id },
-      include: {
-        players: {
-          orderBy: {
-            pts: 'desc',
-          },
-        },
-        rounds: {
-          orderBy: {
-            number: 'desc', // rodada mais recente primeiro
-          },
-          take: 1, // rodada atual
-          include: {
-            matches: {
-              include: {
-                playerA: true,
-                playerB: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    const tournament =
+      await this.tournamentRepo.getTournamentAndCurrentRound(id);
     return tournament;
   }
 
   async getTournamentSettings(tournamentId: number) {
-    const tournament = await this.prisma.tournament.findUnique({
-      where: { id: tournamentId },
-      select: {
-        id: true,
-        name: true,
-        rodadas: true,
-        playOff: true,
-        timer: true,
-      },
-    });
+    const tournament =
+      await this.tournamentRepo.getTournamentSetting(tournamentId);
 
     if (!tournament) {
       throw new NotFoundException('Tournament not found');
@@ -261,53 +225,46 @@ export class TournamentsService {
     tournamentId: number,
     data: UpdateTournamentSettingsDto,
   ) {
-    const tournament = await this.prisma.tournament.findUnique({
-      where: { id: tournamentId },
-      select: { id: true },
-    });
-
-    if (!tournament) {
-      throw new NotFoundException('Tournament not found');
+    try {
+      return await this.tournamentRepo.updateTournamentSettings(
+        tournamentId,
+        data,
+      );
+    } catch (e) {
+      if (e.code === 'P2025') {
+        throw new NotFoundException('Tournament not found');
+      }
+      throw e;
     }
-
-    return this.prisma.tournament.update({
-      where: { id: tournamentId },
-      data,
-      select: {
-        id: true,
-        name: true,
-        rodadas: true,
-        playOff: true,
-        timer: true,
-      },
-    });
   }
 
   async removePlayers(tournamentId: number, playerIds: number[]) {
-    const tournament = await this.prisma.tournament.findUnique({
-      where: { id: tournamentId },
-      select: { id: true },
-    });
-
-    if (!tournament) {
-      throw new NotFoundException('Tournament not found');
-    }
-
-    return this.prisma.$transaction([
-      this.prisma.tournament.update({
-        where: { id: tournamentId },
-        data: {
-          players: {
-            disconnect: playerIds.map((id) => ({ id })),
+    try {
+      return await this.prisma.$transaction([
+        this.prisma.tournament.update({
+          where: { id: tournamentId },
+          data: {
+            players: {
+              disconnect: playerIds.map((id) => ({ id })),
+            },
           },
-        },
-      }),
+        }),
 
-      this.prisma.player.deleteMany({
-        where: {
-          id: { in: playerIds },
-        },
-      }),
-    ]);
+        this.prisma.player.deleteMany({
+          where: {
+            id: { in: playerIds },
+          },
+        }),
+      ]);
+    } catch (e) {
+      if (e.code === 'P2025') {
+        throw new NotFoundException('Tournament not found');
+      }
+      throw e;
+    }
+  }
+
+  async getAllTournaments() {
+    return await this.tournamentRepo.getAllTournamentsSettings();
   }
 }

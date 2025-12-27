@@ -66,6 +66,13 @@ export class TournamentService {
     });
 
   }
+  getAllTournaments(): Promise<TournamentEntity[]> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<any>(`${this.apiUrl}/tournaments/find/all`)
+        .subscribe(resolve, reject);
+    });
+  }
   getTournament(id: number): Promise<TournamentEntity> {
     return new Promise((resolve, reject) => {
       this.http

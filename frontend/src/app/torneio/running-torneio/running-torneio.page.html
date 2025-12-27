@@ -1,41 +1,77 @@
+
 <app-header></app-header>
+
 <ion-content class="arena-bg">
 
   <!-- HEADER -->
-  <div class="top-header">
-    <div>
-      <h2>{{tournament.name}}</h2>
+  <div class="top-header" *ngIf="tournament as t">
+
+    <div class="title-area">
+      <h2>{{ t.name }}</h2>
+
       <span class="phase">
-        <span class="dot"></span> FASE SUÍÇA
+        <span class="dot"></span>
+        FASE SUÍÇA
       </span>
     </div>
 
-    <ion-button fill="outline" size="small">
+    <ion-button fill="outline" size="small" class="timer-btn">
       <ion-icon name="time-outline"></ion-icon>
-      @if(tournament.timer > 0){
-        {{tournament.timer}} Min
-      } @else {
+
+      <span *ngIf="t.timer > 0; else freeTime">
+        {{ t.timer }} Min
+      </span>
+
+      <ng-template #freeTime>
         Tempo Livre
-      }
+      </ng-template>
     </ion-button>
+
   </div>
 
-<app-torneio-ranking [players]="tournament.players"></app-torneio-ranking>
+  <!-- RANKING -->
+  <app-torneio-ranking
+    *ngIf="tournament"
+    [players]="tournament.players">
+  </app-torneio-ranking>
+
   <!-- RODADA -->
-  <div class="round-header">
-    <h3>Rodada {{tournament.rounds[0]?.number}}</h3>
-    <span class="status">Em andamento</span>
+  <div
+    class="round-header"
+    *ngIf="tournament?.rounds?.length">
+
+    <h3>
+      Rodada {{ tournament.rounds[0].number }}
+    </h3>
+
+    <span class="status">
+      Em andamento
+    </span>
+
   </div>
 
-<ng-container *ngIf="tournament as t">
-  <ng-container *ngIf="t.rounds.length > 0 && t.rounds[0].matches">
-    <app-matches [matches]="t.rounds[0].matches"></app-matches>
+  <!-- MATCHES -->
+
+<ng-container *ngIf="tournament?.rounds?.length">
+
+  <ng-container *ngIf="tournament.rounds[0].matches as matches">
+    <app-matches [matches]="matches"></app-matches>
   </ng-container>
+
 </ng-container>
- <!-- ACTION -->
-  <ion-button expand="block" class="next-btn" (click)="gerarNovaRodada()">
+
+
+  <!-- ACTION -->
+  <ion-button
+    expand="block"
+    class="next-btn"
+    (click)="gerarNovaRodada()"
+    *ngIf="tournament">
+
     Próxima Rodada
     <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+
   </ion-button>
 
 </ion-content>
+

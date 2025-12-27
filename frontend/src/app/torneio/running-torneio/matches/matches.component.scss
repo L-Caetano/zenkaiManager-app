@@ -1,0 +1,63 @@
+
+.match-card {
+ background: linear-gradient(
+    180deg,
+    rgba(25, 25, 40, 0.95),
+    rgba(15, 15, 30, 0.95)
+  );
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.match-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.player {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player.blue {
+  text-align: right;
+  color: #4da3ff;
+}
+
+.player.green {
+  text-align: left;
+  color: #2ecc71;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.score strong {
+  min-width: 22px;
+  text-align: center;
+}
+
+.vs {
+  opacity: 0.6;
+  font-size: 1rem;
+}
+
+.next-btn {
+  --border-radius: 10px;
+}
+
